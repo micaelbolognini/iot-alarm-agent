@@ -30,7 +30,7 @@ konversationell användning.
 
 ## Installation
 
-Krav: PHP 8.3+, Composer, SQLite (standard) samt Ollama eller en Anthropic-nyckel.
+Krav: PHP 8.4+, Composer, SQLite (standard) samt Ollama eller en Anthropic-nyckel.
 
 ```bash
 composer install
