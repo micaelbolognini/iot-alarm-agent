@@ -41,4 +41,12 @@ class AlarmAgentTest extends TestCase
         $this->assertStringContainsString('Gissa aldrig', $instructions);
         $this->assertStringContainsString('eskalera', $instructions);
     }
+
+    public function test_instructions_say_the_data_is_in_the_message(): void
+    {
+        $instructions = (new AlarmAgent)->instructions();
+
+        $this->assertStringContainsString('finns i meddelandet', $instructions);
+        $this->assertStringNotContainsString('Hämta alltid', $instructions);
+    }
 }

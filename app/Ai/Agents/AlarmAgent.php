@@ -24,7 +24,7 @@ class AlarmAgent implements Agent, Conversational, HasStructuredOutput, HasTools
     public function instructions(): string
     {
         return 'Du bedömer larm från industrimaskiner. '
-            .'Hämta alltid felkod och mätvärden med verktygen. Gissa aldrig. '
+            .'Felkod och mätvärden finns i meddelandet. Gissa aldrig. '
             .'allvarlighetsgrad ska vara info, warning eller critical. '
             .'Sätt eskalera till true om allvarlighetsgraden är critical eller om du är osäker. '
             .'Skriv i saknas vad du inte vet.';

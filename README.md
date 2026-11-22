@@ -25,8 +25,11 @@ alarm:assess "Press 1" E101
 ```
 
 Datan hämtas av koden och inte av modellen, så modellen behöver aldrig gissa.
-Agenten exponerar också båda uppslagen som verktyg (`HasTools`) för
-konversationell användning.
+`alarm:assess` är alltså ett workflow med ett AI-steg, inte en autonom agent.
+
+Det finns också ett agentiskt läge, `alarm:chat`. Där får `AlarmAssistant`
+frågan som fri text och väljer själv vilka verktyg (`LookupErrorCode`,
+`GetRecentReadings`) den anropar.
 
 ## Installation
 
@@ -54,6 +57,7 @@ med `--provider`.
 ```bash
 php artisan alarm:assess "Press 1" E101
 php artisan alarm:assess "Kompressor 2" W204 --provider=anthropic
+php artisan alarm:chat "Vad är det för fel på Press 1?"
 ```
 
 Demodata: `Press 1` har stigande temperatur och `Kompressor 2` har stabil
@@ -78,9 +82,10 @@ nätverk. Verktygen testas mot en databas i minnet via factories.
 
 | Sökväg | Innehåll |
 |--------|----------|
-| `app/Ai/Agents/AlarmAgent.php` | Instruktioner, verktyg och outputschema |
+| `app/Ai/Agents/AlarmAgent.php` | Bedömning med strukturerad output (workflow) |
+| `app/Ai/Agents/AlarmAssistant.php` | Frågeagent som väljer verktyg själv |
 | `app/Ai/Tools/` | `LookupErrorCode`, `GetRecentReadings` |
-| `app/Console/Commands/AssessAlarm.php` | Kommandot `alarm:assess` |
+| `app/Console/Commands/` | `alarm:assess` och `alarm:chat` |
 | `app/Models/` | `Machine`, `Reading`, `ErrorCode` |
 | `config/ai.php` | Leverantörer (Ollama, Anthropic, ...) |
 
