@@ -5,12 +5,22 @@ namespace App\Ai\Agents;
 use App\Ai\Tools\GetRecentReadings;
 use App\Ai\Tools\LookupErrorCode;
 use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Contracts\Conversational;
 use Laravel\Ai\Contracts\HasTools;
+use Laravel\Ai\Messages\Message;
 use Laravel\Ai\Promptable;
 
-class AlarmAssistant implements Agent, HasTools
+class AlarmAssistant implements Agent, Conversational, HasTools
 {
     use Promptable;
+
+    /** @param  list<Message>  $history */
+    public function __construct(private array $history = []) {}
+
+    public function messages(): iterable
+    {
+        return $this->history;
+    }
 
     public function instructions(): string
     {

@@ -29,7 +29,8 @@ Datan hämtas av koden och inte av modellen, så modellen behöver aldrig gissa.
 
 Det finns också ett agentiskt läge, `alarm:chat`. Där får `AlarmAssistant`
 frågan som fri text och väljer själv vilka verktyg (`LookupErrorCode`,
-`GetRecentReadings`) den anropar.
+`GetRecentReadings`) den anropar. Det är en chatt: den frågar `Du:` efter varje
+svar och minns samtalet. Avsluta med `exit`.
 
 ## Installation
 
@@ -58,6 +59,7 @@ med `--provider`.
 php artisan alarm:assess "Press 1" E101
 php artisan alarm:assess "Kompressor 2" W204 --provider=anthropic
 php artisan alarm:chat "Vad är det för fel på Press 1?"
+php artisan alarm:chat --provider=anthropic
 ```
 
 Demodata: `Press 1` har stigande temperatur och `Kompressor 2` har stabil
@@ -101,3 +103,10 @@ nätverk. Verktygen testas mot en databas i minnet via factories.
 - **Fejka agenten i tester.** `AlarmAgent::fake()` ger snabba tester utan modell
   eller nätverk. Själva promptens kvalitet testas inte så, den kräver separata
   utvärderingar mot en riktig modell.
+- **Modellvalet påverkar hur väl instruktionerna följs.** Med `alarm:chat` och
+  frågan "Vad är fel på Press 1?" (ingen felkod angiven) gav `qwen3:8b` påhittade
+  åtgärder och blandade in danska ord, trots instruktionen att aldrig gissa.
+  Claude sa att felkoden saknades, gav ingen åtgärd utan underlag och markerade
+  sin egen extrapolering som en uppskattning. Samma kod, samma verktyg och samma
+  prompt. Därför skickar `alarm:assess` in datan strukturerat och låter koden
+  agera, och en prompt ska utvärderas mot den modell som faktiskt används.
